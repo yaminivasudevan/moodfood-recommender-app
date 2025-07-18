@@ -1,16 +1,15 @@
-package com.yamini.moodfood.dto;
+package com.yamini.moodfood.payload;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ApiResponse<T> {
-    private String status;
+    private boolean success;
     private T data;
     private String message;
 

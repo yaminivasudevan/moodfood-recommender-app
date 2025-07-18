@@ -1,6 +1,6 @@
 package exception;
 
-import com.yamini.moodfood.dto.ApiResponse;
+import com.yamini.moodfood.payload.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(err ->
                 errors.put(err.getField(), err.getDefaultMessage())
         );
-        ApiResponse<Map<String, String>> response = new ApiResponse<>("error", errors, "Validation failed");
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(false, errors, "Validation failed");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);    }
 
     @ExceptionHandler(Exception.class)
