@@ -3,7 +3,7 @@ package com.yamini.moodfood.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data // includes @Getter, @Setter, @ToString, @EqualsAndHashCode
 @AllArgsConstructor
@@ -15,5 +15,5 @@ public class MealLogRequest {
     private String meal;
     @NotBlank(message = "Mood can't be blank!")
     private String mood;
-    private LocalDateTime loggedAt;
+    private OffsetDateTime loggedAt;
 }

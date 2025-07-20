@@ -2,18 +2,19 @@ package com.yamini.moodfood.service.impl;
 
 import com.yamini.moodfood.dto.MealLogRequest;
 import com.yamini.moodfood.dto.MealLogResponse;
+import com.yamini.moodfood.dto.NutritionInfo;
 import com.yamini.moodfood.model.MealLog;
 import com.yamini.moodfood.repository.MealLogRepository;
 import com.yamini.moodfood.service.MealLogService;
+import com.yamini.moodfood.service.NutritionService;
 import com.yamini.moodfood.specification.MealLogSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -22,13 +23,24 @@ public class MealLogServiceImpl implements MealLogService {
     @Autowired
     MealLogRepository mealLogRepository;
 
+    @Autowired
+    NutritionService nutritionService;
+
     @Override
     public MealLogResponse saveMeal(MealLogRequest mealLogRequest) {
+        // Fetch nutrition info
+        NutritionInfo nutrition = nutritionService.fetchNutritionData(mealLogRequest.getMeal());
+
         MealLog mealLog = MealLog.builder()
                 .meal(mealLogRequest.getMeal())
                 .mood(mealLogRequest.getMood())
-                .loggedAt(LocalDateTime.now())
+                .loggedAt(OffsetDateTime.now())
+                .calories(nutrition.getCalories())
+                .protein(nutrition.getProtein())
+                .fat(nutrition.getFat())
+                .carbs(nutrition.getCarbs())
                 .build();
+
         MealLog saved = mealLogRepository.save(mealLog);
         return new MealLogResponse(saved);
     }
@@ -49,6 +61,7 @@ public class MealLogServiceImpl implements MealLogService {
                 .toList();
     }
 
+    @Override
     public Page<MealLogResponse> getMealHistory(
             String meal, String mood, LocalDateTime fromDate, LocalDateTime toDate,
             int page, int size, String sortBy, String direction) {
@@ -74,5 +87,4 @@ public class MealLogServiceImpl implements MealLogService {
 
         return mealLogs.map(MealLogResponse::new);
     }
-
 }
