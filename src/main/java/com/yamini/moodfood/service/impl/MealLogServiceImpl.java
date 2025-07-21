@@ -8,6 +8,7 @@ import com.yamini.moodfood.repository.MealLogRepository;
 import com.yamini.moodfood.service.MealLogService;
 import com.yamini.moodfood.service.NutritionService;
 import com.yamini.moodfood.specification.MealLogSpecification;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 public class MealLogServiceImpl implements MealLogService {
 
@@ -28,8 +30,15 @@ public class MealLogServiceImpl implements MealLogService {
 
     @Override
     public MealLogResponse saveMeal(MealLogRequest mealLogRequest) {
-        // Fetch nutrition info
-        NutritionInfo nutrition = nutritionService.fetchNutritionData(mealLogRequest.getMeal());
+        NutritionInfo nutrition;
+        try {
+            nutrition = nutritionService.fetchNutritionData(mealLogRequest.getMeal());
+        } catch (Exception e) {
+            // Log error, fallback to zero nutrition info so meal logging still works
+            log.error("Nutrition API failed, saving meal without nutrition data", e);
+            nutrition = NutritionInfo.builder()
+                    .calories(0.0).protein(0.0).fat(0.0).carbs(0.0).build();
+        }
 
         MealLog mealLog = MealLog.builder()
                 .meal(mealLogRequest.getMeal())

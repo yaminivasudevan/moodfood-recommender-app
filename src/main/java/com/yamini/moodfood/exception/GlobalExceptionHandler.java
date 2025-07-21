@@ -12,27 +12,37 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle your custom Edamam rate limit exception
-    @ExceptionHandler(EdamamRateLimitException.class)
-    public ResponseEntity<Map<String, Object>> handleEdamamRateLimitException(EdamamRateLimitException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.TOO_MANY_REQUESTS.value());  // 429
-        body.put("error", "Too Many Requests");
-        body.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(body, HttpStatus.TOO_MANY_REQUESTS);
+    // Handle custom API exceptions
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<Map<String, Object>> handleApiException(ApiException ex) {
+        return buildErrorResponse(ex.getMessage(), ex.getStatus());
     }
 
-    // for generic exceptions
+    // Handle not found exceptions
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // Handle bad requests
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleBadRequest(IllegalArgumentException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Catch-all fallback
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
+        return buildErrorResponse("An unexpected error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // Helper method to reduce redundancy
+    private ResponseEntity<Map<String, Object>> buildErrorResponse(String message, HttpStatus status) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal Server Error");
-        body.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+        body.put("status", status.value());
+        body.put("error", status.getReasonPhrase());
+        body.put("message", message);
+        return new ResponseEntity<>(body, status);
     }
 }
