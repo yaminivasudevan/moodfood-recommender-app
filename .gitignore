@@ -1,0 +1,33 @@
+# === Backend ===
+# Maven build output
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+backend/*.log
+
+# IntelliJ IDEA files (optional)
+.idea/
+
+# === Frontend ===
+# Node modules
+frontend/node_modules
+
+# Build output (React, Vue, etc.)
+frontend/build/
+frontend/dist/
+
+# Environment variables
+frontend/.env
+
+# === OS generated files ===
+.DS_Store
+Thumbs.db
+
+# === Others ===
+# VSCode settings (if any)
+.vscode/
+
+# Temporary files
+*.tmp
+
