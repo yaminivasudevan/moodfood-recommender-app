@@ -1,28 +1,44 @@
-# MoodFood Backend
 
-MoodFood is a RESTful backend API built with Spring Boot that enables users to log their meals along with their mood, fetch detailed nutrition information from the USDA FoodData Central API, and view meal history with advanced filtering, sorting, and pagination.
+# MoodFood App
+
+MoodFood is a fullstack web application that allows users to log meals along with their mood, fetch accurate nutrition information from the USDA FoodData Central API, and view meal history with advanced filtering and analytics. Future updates will include AI-powered mood-based meal recommendations.
 
 ---
 
 ## Features
 
-- **Meal Logging:** Log meals with mood and timestamp.  
-- **Nutrition Integration:** Fetches calories, protein, fat, and carbs from USDA FoodData Central API.  
-- **Meal History:** Filter, sort, and paginate meal logs based on meal name, mood, and date range.  
-- **Robust Error Handling:** Falls back to zero nutrition values if the external nutrition API fails.  
-- **Clean Architecture:** Uses Spring Data JPA, Specifications, and layered services.
+### Backend (Spring Boot)
+- **Meal Logging:** Log meals with mood and timestamp.
+- **Nutrition Integration:** Fetch calories, protein, fat, and carbs from USDA FoodData Central API.
+- **Meal History:** Filter, sort, and paginate logs by meal name, mood, and date range.
+- **Robust Error Handling:** Falls back to zero values if external nutrition API fails.
+- **Clean Architecture:** Layered services with Spring Data JPA and Specifications.
+
+### Frontend (React)
+- Log meals with mood in an intuitive interface.
+- View meal history and nutrition insights visually.
+- Designed for responsiveness and user-friendliness.
 
 ---
 
 ## Technologies Used
 
-- Java 17+  
-- Spring Boot 3.x  
-- Spring Data JPA (Hibernate)
-- React.js
-- Lombok  
-- Maven  
-- USDA FoodData Central API
+- **Backend:** Java 17+, Spring Boot 3.x, Spring Data JPA, Hibernate, Maven, Oracle DB
+- **Frontend:** React.js, HTML, CSS, JavaScript
+- **External API:** USDA FoodData Central (for nutrition info)
+- **AI (Upcoming):** OpenAI or Gemini for meal recommendations
+
+---
+
+## Project Structure
+
+```
+moodfood-recommender-app/
+├── backend/       # Spring Boot backend
+├── frontend/      # React frontend
+├── README.md
+├── .gitignore
+```
 
 ---
 
@@ -30,18 +46,21 @@ MoodFood is a RESTful backend API built with Spring Boot that enables users to l
 
 ### Prerequisites
 
-- Java 17 or higher installed  
-- Maven installed  
+- Java 17 or higher
+- Maven installed
+- Node.js and npm for frontend
 - Oracle or any JPA-compatible database
-- USDA API key (optional but recommended for nutrition data)
+- USDA API key (optional but recommended)
 
-### Setup
+---
+
+## Backend Setup
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yaminivasudevan/moodfood-recommender-app
-   cd moodfood-recommender-app
+   git clone https://github.com/yaminivasudevan/moodfood-recommender-app.git
+   cd moodfood-recommender-app/backend
    ```
 
 2. Configure your database in `src/main/resources/application.properties`:
@@ -55,30 +74,50 @@ MoodFood is a RESTful backend API built with Spring Boot that enables users to l
    spring.jpa.properties.hibernate.format_sql=true
    ```
 
-3. (Optional) Add your USDA API key to environment variables or your application configuration so the nutrition service can fetch data.
+3. (Optional) Add USDA API key to environment or config for nutrition data.
+
+4. Run backend:
+
+   ```bash
+   mvn spring-boot:run
+   ```
+
+Backend will run at `http://localhost:8080`.
 
 ---
 
-## Running the Application
+## Frontend Setup
 
-Start the backend server by running:
+1. Navigate to frontend folder:
 
-```bash
-mvn spring-boot:run
-```
+   ```bash
+   cd ../frontend
+   ```
 
-This will start the server at `http://localhost:8080`.
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run frontend:
+
+   ```bash
+   npm start
+   ```
+
+App runs at `http://localhost:3000`. Ensure backend is running at port 8080.
 
 ---
 
 ## API Endpoints
 
 | Endpoint                    | Method | Description                                |
-|-----------------------------|--------|--------------------------------------------|
-| `/api/meals/log`            | POST   | Log a new meal with mood and view its nutrition details |
-| `/api/meals/getAllMeals`     | GET    | Retrieve all logged meals |
-| `/api/meals/history`  | GET    | Retrieve filtered, sorted, paginated meal logs |
-| `/api/meals/filter`  | GET    | Retrieve meal logs based on the mood |
+|----------------------------|--------|--------------------------------------------|
+| `/api/meals/log`           | POST   | Log a new meal with mood and view nutrition details |
+| `/api/meals/getAllMeals`   | GET    | Retrieve all logged meals |
+| `/api/meals/history`       | GET    | Retrieve filtered, sorted, paginated meal logs |
+| `/api/meals/filter`        | GET    | Retrieve meals filtered by mood |
 
 ---
 
@@ -110,10 +149,22 @@ This will start the server at `http://localhost:8080`.
 
 ---
 
-## Notes
+## Upcoming Features
 
-- Nutrition data is fetched live from the USDA FoodData Central API.  
-- If the external API call fails, the system falls back to zero nutrition values to ensure meal logging still works.  
-- The meal history endpoint supports filters such as meal name, mood, date range, and includes pagination and sorting options for performance.
+- AI-powered meal recommendations using OpenAI or Gemini
+- Nutrition charts and mood trends
+- CSV export of meal logs
+- Authentication and user-specific meal history
 
 ---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## Author
+
+**Yamini Vasudevan**  
+[LinkedIn](https://www.linkedin.com/in/yaminivasudevan) | [GitHub](https://github.com/yaminivasudevan)
