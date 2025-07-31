@@ -1,17 +1,28 @@
 
 # MoodFood App
 
-MoodFood is a fullstack web application that allows users to log meals along with their mood, fetch accurate nutrition information from the USDA FoodData Central API, and view meal history with advanced filtering and analytics. Future updates will include AI-powered mood-based meal recommendations.
+**MoodFood** is a fullstack web application that allows users to:
+
+- Log meals along with their current mood  
+- Fetch detailed nutrition data from the **USDA FoodData Central API**  
+- Receive **AI-powered recommendations** based on mood, nutritional balance, and psychological impact of food  
+
+Using the **Google Gemini API**, MoodFood doesn’t just suggest random meals — it **analyzes the logged food's nutritional content**, **evaluates how that might affect the user's mood**, and recommends **balanced meals** to improve or stabilize emotional wellbeing.
+
+Users can also explore their meal history with advanced filtering, trends, and upcoming features like nutrition analytics and mood-based charts.
 
 ---
 
 ## Features
 
-### Backend (Spring Boot)
+### 🔧 Backend (Spring Boot)
 - **Meal Logging:** Log meals with mood and timestamp.
-- **Nutrition Integration:** Fetch calories, protein, fat, and carbs from USDA FoodData Central API.
+- **AI-Powered Nutrition + Mood Analysis:**
+  - Analyzes meals for macro breakdown and emotional impact
+  - Suggests meals that are both nutritionally balanced and mood-appropriate
+- **Nutrition Integration:** Fetch calories, protein, fat, and carbs using USDA API.
 - **Meal History:** Filter, sort, and paginate logs by meal name, mood, and date range.
-- **Robust Error Handling:** Falls back to zero values if external nutrition API fails.
+- **Robust Error Handling:** Falls back to default values if external APIs fail.
 - **Clean Architecture:** Layered services with Spring Data JPA and Specifications.
 
 ### Frontend (React)
@@ -114,7 +125,7 @@ App runs at `http://localhost:3000`. Ensure backend is running at port 8080.
 
 | Endpoint                    | Method | Description                                |
 |----------------------------|--------|--------------------------------------------|
-| `/api/meals/log`           | POST   | Log a new meal with mood and view nutrition details |
+| `/api/meals/log`           | POST   | Log a meal with mood; returns nutrition analysis + mood-based suggestions  |
 | `/api/meals/getAllMeals`   | GET    | Retrieve all logged meals |
 | `/api/meals/history`       | GET    | Retrieve filtered, sorted, paginated meal logs |
 | `/api/meals/filter`        | GET    | Retrieve meals filtered by mood |
